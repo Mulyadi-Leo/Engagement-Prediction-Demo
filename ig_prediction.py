@@ -101,6 +101,14 @@ if st.button("Generate Prediksi"):
         data_baru[col] = data_baru[col].map(mean_encodings[col])
         data_baru[col].fillna(data_baru[col].mean(), inplace=True)
 
-    # Prediksi
+      # Prediksi
     prediksi_engagement = best_gb.predict(data_baru)
+
+    # Tambahkan rentang kemungkinan nilai asli
+    rmse_test = 2.21 # RMSE dari evaluasi model
+    lower_bound = max(0, prediksi_engagement - rmse_test)
+    upper_bound = prediksi_engagement + rmse_test
+
+
     st.success(f"Prediksi Engagement Rate (%): {prediksi_engagement[0]:.2f}")
+    st.info(f"Rentang kemungkinan nilai asli: {lower_bound[0]:.2f}% - {upper_bound[0]:.2f}%")
